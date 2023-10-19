@@ -20,4 +20,4 @@ systemctl start backend
 
 dnf install mysql -y 
 
-mysql -h 172.31.21.247 -uroot -pExpenseApp@1 < /app/schema/backend.sql 
+mysql -h mysql.vaishnavidevops.online -uroot -pExpenseApp@1 < /app/schema/backend.sql 
