@@ -1,24 +1,37 @@
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+source common.sh
 
-dnf install nodejs -y
+component=backend 
 
-cp backend.service /etc/systemd/system/backend.service
+echo Install NodeJS Repos
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash >>$log_file
 
-useradd expense
+echo Install NodeJS
+dnf install nodejs -y >>$log_file
 
+echo Copy Backend Service File
+cp backend.service /etc/systemd/system/backend.service >>$log_file
+
+echo Add Application User
+useradd expense >>$log_file
+
+echo Clean App Content
+rm -rf /app >>$log_file
 mkdir /app 
 
-curl -o /tmp/backend.zip https://expense-artifacts.s3.amazonaws.com/backend.zip 
-cd /app 
-unzip /tmp/backend.zip
+cd /app
 
-npm install 
+download_and_extract
 
-systemctl daemon-reload
+echo Download Dependencies
+npm install >>$log_file
 
-systemctl enable backend 
-systemctl start backend
+echo Start Backend Service
+systemctl daemon-reload >>$log_file
+systemctl enable backend >>$log_file
+systemctl start backend >>$log_file
 
-dnf install mysql -y 
+echo Install MySQL Client
+dnf install mysql -y >>$log_file
 
-mysql -h mysql.vaishnavidevops.online -uroot -pExpenseApp@1 < /app/schema/backend.sql 
+echo Load Schema
+mysql -h mysql.vaishnavidevops.online -uroot -pExpenseApp@1 < /app/schema/backend.sql >>$log_file
