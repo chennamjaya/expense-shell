@@ -28,6 +28,11 @@ fi
 cd /usr/share/nginx/html 
 
 download_and_extract
+if [ $? -eq 0 ]; then
+ echo Success
+else
+ echo Failed
+fi
 
 echo Starting Nginx code
 systemctl enable nginx &>>$log_file

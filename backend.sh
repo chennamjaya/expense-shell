@@ -45,6 +45,11 @@ else
 fi
 
 download_and_extract
+if [ $? -eq 0 ]; then
+ echo Success
+else
+ echo Failed
+fi
 
 echo Download Dependencies
 npm install &>>$log_file
